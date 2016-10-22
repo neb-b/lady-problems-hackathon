@@ -1,15 +1,38 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import {
+  Text,
+  View,
+  StyleSheet,
+  StatusBar,
+  ScrollView,
+  TouchableHighlight
+} from 'react-native'
+import Dimensions from 'Dimensions'
+import DataList from './components/data-list'
 
 class Layout extends Component {
   constructor(props) {
     super(props)
   }
 
+  _renderTop() {
+    return (
+      <View style={[styles.statusBar, this.props.app === 'ios' ? styles.iosStatusBar : styles.androidStatusBar]}>
+        <StatusBar barStyle="light-content" />
+        <Text style={[styles.statusBar, this.props.app === 'ios' ? styles.iosStatusText : styles.androidStatusText]}>
+          App name
+        </Text>
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={styles.layout}>
-        <Text>Hello world</Text>
+        {this._renderTop()}
+        <View style={styles.listView}>
+          <DataList {...this.props}/>
+        </View>
       </View>
     )
   }
@@ -17,8 +40,38 @@ class Layout extends Component {
 
 export default Layout
 
+const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   layout: {
-    padding: 50
+    flex: 1,
+    width,
+    height
+  },
+  statusBar: {
+    backgroundColor: '#3273f4'
+  },
+  iosStatusBar: {
+    height: 70,
+  },
+  androidStatusBar: {
+    height: 60,
+  },
+  iosStatusText: {
+    padding: 30,
+    paddingBottom: 20,
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '500',
+  },
+  androidStatusText: {
+    paddingTop: 15,
+    paddingLeft: 30,
+    paddingBottom: 20,
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '400',
+  },
+  listView: {
+    flex: 1,
   }
 })
