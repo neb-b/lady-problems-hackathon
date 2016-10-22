@@ -1,0 +1,3 @@
+rootProject.name = 'lady_problems_hackathon'
+
+include ':app'
