@@ -8,11 +8,16 @@ import {
   TouchableHighlight
 } from 'react-native'
 import Dimensions from 'Dimensions'
-import DataList from './components/data-list'
+import Splash from './components/splash'
+import ActiveScreen from './components/active-screen'
 
 class Layout extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      data: null
+    }
   }
 
   _renderTop() {
@@ -31,7 +36,11 @@ class Layout extends Component {
       <View style={styles.layout}>
         {this._renderTop()}
         <View style={styles.listView}>
-          <DataList {...this.props}/>
+          {
+            this.props.active
+            ? <ActiveScreen {...this.props}/>
+            : <Splash {...this.props}/>
+          }
         </View>
       </View>
     )
