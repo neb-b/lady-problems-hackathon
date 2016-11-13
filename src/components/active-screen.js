@@ -1,38 +1,70 @@
-import React from 'react'
-import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
+import React, { Component } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  Linking
+} from 'react-native'
 import Dimensions from 'Dimensions'
 
-const _renderDataRow = ({title, summary, address, hours, links}) => {
-  return (
-    <View
-      key={title}
-      style={styles.resourceData}>
-      <Text style={styles.resourceHeading}>{title}</Text>
-      <Text>{summary}</Text>
-      <Text>{address}</Text>
-      <Text style={styles.linksHeading}>Helpful links</Text>
-      {links.length && links.map((link) => <Text key={link}>{link}</Text>)}
-    </View>
-  )
-}
+class ActiveScreen extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-const ActiveScreen = ({clearActive, active}) => {
-  const { title, summary, data } = active
-  return (
-    <View style={styles.active}>
-      <Text style={styles.heading}>{title}</Text>
-      <Text style={styles.resource}>{summary}</Text>
-      <View style={styles.data}>
-        {data.length && data.map(_renderDataRow)}
-      </View>
+  handleLinkPress(url) {
+    console.log("url", url)
+  }
+
+  _renderLink(link) {
+    return (
       <TouchableHighlight
-        onPress={clearActive}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Back</Text>
-        </View>
+        key={link}
+        onPress={() => this.handleLinkPress(link)}>
+        <Text
+          key={link}
+          style={styles.link}>
+          {link}
+        </Text>
       </TouchableHighlight>
-    </View>
-  )
+    )
+  }
+
+  _renderDataRow({title, summary, address, hours, links}) {
+    return (
+      <View
+        key={title}
+        style={styles.resourceData}>
+        <Text style={styles.resourceHeading}>{title}</Text>
+        <Text>{summary}</Text>
+        <Text>{address}</Text>
+        <Text style={styles.linksHeading}>Helpful links:</Text>
+        {links.length && links.map(this._renderLink)}
+      </View>
+    )
+  }
+
+  render() {
+    const { clearActive, active: {title, summary, data} } = this.props
+    return (
+      <View style={styles.active}>
+        <View style={styles.resourceWrapper}>
+          <Text style={styles.heading}>{title}</Text>
+          <Text style={styles.resource}>{summary}</Text>
+          <View style={styles.data}>
+            {data.length && data.map(this._renderDataRow)}
+          </View>
+        </View>
+        <TouchableHighlight
+          onPress={clearActive}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Back</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+    )
+  }
 }
 
 export default ActiveScreen
@@ -45,6 +77,9 @@ const styles = StyleSheet.create({
     width,
     padding: 30
   },
+  resourceWrapper: {
+    paddingBottom: 30
+  },
   heading: {
     fontSize: 36,
     fontWeight: '800'
@@ -56,10 +91,16 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   resourceHeading: {
+    fontSize: 18,
     fontWeight: '600'
   },
   linksHeading: {
-    
+    paddingTop: 5,
+    fontWeight: '600'
+  },
+  link: {
+    color: 'blue',
+    textDecorationLine: 'underline'
   },
   button: {
     alignSelf: 'center',

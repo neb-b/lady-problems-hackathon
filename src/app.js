@@ -26,7 +26,7 @@ class App extends Component {
               summary: "Summary of resource 2",
               address: "Address of resource 2",
               hours: "8:00 a.m. - 7:00 p.m.",
-              links: ["google.com", "google.com", "google.com"]
+              links: ["google.com"]
             }
           ]
         },
